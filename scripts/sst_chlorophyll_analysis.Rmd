@@ -1,0 +1,391 @@
+---
+title: "Nungwi Analysis"
+always_allow_html: true
+output: pdf_document
+date: "2026-03-26"
+editor_options: 
+  chunk_output_type: console
+---
+
+RESEARCH PAPER
+
+# Relationship Between Sea Surface Temperature (SST) and Chlorophyll-a Concentration in Nungwi Coastal Waters, Zanzibar (2018–2023)
+
+**Prepared by:**\
+Frowin Kaizilege Gaspal
+
+**Study Area:**\
+Nungwi Coastal Waters, Zanzibar, Tanzania
+
+**Software Used:**\
+R Programming, ArcMap, Microsoft PowerPoint
+
+**Data Source:**\
+NASA Ocean Color (MODIS-Aqua Satellite Data)
+
+**Date:**\
+March 2026
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+pacman::p_load(tidyverse, here, prettydoc, flextable, reactable)
+final_data <- read_csv(here("data/final_data.csv"))
+final_data$date <- dmy(final_data$date)
+final_data$month <- month(final_data$date, label = TRUE)
+```
+
+# 1.  Abstract
+
+This study investigated the seasonal and interannual variability of Sea Surface Temperature (SST) and chlorophyll-a concentration in the coastal waters of Nungwi, Zanzibar, from January 2018 to December 2023. Monthly satellite derived SST and chlorophyll-a data were analyzed using the R statistical environment to identify temporal trends, seasonal patterns, and physical-biological relationships. Time series analysis revealed noticeable variability in both SST and chlorophyll-a across the study period, with distinct seasonal cycles observed. Seasonal analysis indicated that chlorophyll-a concentrations tended to increase during relatively cooler periods, suggesting enhanced phytoplankton productivity under lower temperature conditions. Correlation and regression analyses demonstrated a negative relationship between SST and chlorophyll-a concentration, highlighting the influence of temperature variability on biological productivity. Anomaly detection further identified periods of unusual temperature and productivity conditions. The results provide valuable insight into coastal ocean dynamics in northern Zanzibar and demonstrate the usefulness of satellite based monitoring in understanding marine ecosystem variability.
+
+# 2.  Introduction
+
+The marine environment plays a critical role in supporting biodiversity, regulating climate, and sustaining coastal livelihoods. Phytoplankton, microscopic marine plants, form the base of the ocean food web and contribute significantly to global primary productivity. Chlorophyll-a concentration is widely used as an indicator of phytoplankton biomass and biological productivity in marine ecosystems. Understanding the variability of chlorophyll-a in relation to environmental factors is therefore essential for monitoring ecosystem health and supporting sustainable marine resource management.
+
+Sea Surface Temperature (SST) is one of the most important physical parameters influencing marine biological processes. Variations in SST affect water column stability, nutrient availability, and biological productivity. Cooler water conditions are often associated with increased nutrient mixing, which can enhance phytoplankton growth. Therefore, examining the relationship between SST and chlorophyll-a provides insight into physica-biological coupling within marine systems.
+
+Nungwi, located on the northern coast of Zanzibar island, is an ecologically and economically significant coastal region. The area supports coral reef ecosystems, artisanal fisheries, and tourism activities. Seasonal monsoon systems influence oceanographic conditions in this region, resulting in variations in temperature and biological productivity throughout the year. Monitoring these changes is important for understanding ecosystem dynamics and supporting coastal management.
+
+The aim of this study was to investigate seasonal and interannual variability of Sea Surface Temperature and chlorophyll-a concentration in Nungwi coastal waters from 2018 to 2023. Specifically, the study examined temporal trends, seasonal patterns, and the relationship between SST and chlorophyll-a to improve understanding of coastal ocean productivity dynamics.
+
+# 3.  Study Area
+
+The study area is located in Nungwi, situated on the northern coast of Zanzibar island along the western Indian Ocean. Nungwi lies within tropical coastal waters influenced by seasonal monsoon systems, including the Northeast Monsoon and Southeast Monsoon, which significantly affect oceanographic conditions such as temperature, circulation, and nutrient distribution. The coastal environment consists of coral reef ecosystems, shallow lagoons, and sandy shorelines that support diverse marine life and local fisheries.
+
+The region experiences seasonal variations in oceanographic conditions driven by wind patterns, which influence vertical mixing and biological productivity. These variations make Nungwi an important site for studying physical and biological interactions in coastal marine ecosystems.
+
+![**Figure 1:** *Location map of study area*](images/clipboard-3820312957.png)
+
+# 4.  Methodology
+
+![**Figure 2:** *Flowchart for generation of the Relationship between Sea Surface Temperature and Chlorophyll-a Concentration.*](images/clipboard-4243184008.png)
+
+**4.1  Data Source**
+
+Monthly Sea Surface Temperature (SST) and chlorophyll-a concentration data were obtained from NASA ocean color, Moderate Resolution Imaging Spectroradiometer (MODIS-Aqua) satellite [NASA ocean color](https://oceandata.sci.gsfc.nasa.gov/l3/) with resolution of 4km covering the period from 2018 to 2023. The datasets consisted of mean monthly values representing oceanographic conditions within the Nungwi coastal region. Satellite derived data provide consistent spatial and temporal coverage, making them suitable for long term environmental monitoring and analysis.
+
+**4.2  Data Processing in R**
+
+Data processing and statistical analysis were conducted using the R statistical programming environment. The dataset was imported into R and the date column was converted into standard date format to enable time based analysis. Data cleaning procedures were performed to ensure accuracy and consistency, including checking for missing values and verifying data structure. Additional variables such as month and year were extracted to support seasonal and temporal analysis.
+
+**4.3  Statistical Analysis**
+
+Time series analysis was conducted to examine long term variability in Sea Surface Temperature and chlorophyll-a concentrations across the study period. Seasonal analysis was performed by grouping data by month to calculate monthly mean values and identify repeating seasonal patterns. Pearson correlation analysis was used to determine the strength and direction of the relationship between SST and chlorophyll-a concentration. Linear regression modeling was applied to evaluate the influence of SST on chlorophyll-a variability. Anomaly analysis was also conducted to detect deviations from long term mean conditions, allowing identification of unusual temperature and productivity events.
+
+# 5.  Results
+
+**Data collected using remote sensing**
+
+```{r}
+reactable(final_data)
+```
+
+**Table 1:** *Monthly SST (°C) and chlorophyll (mg/m3) data of Nungwi coastal waters from 2018 to 2023.*
+
+**5.1  SST Time Series**
+
+The time series analysis of Sea Surface Temperature (**Figure 3**) shows noticeable variability across the study period from 2018 to 2023. Seasonal fluctuations are evident, with periods of relatively higher and lower temperature occurring consistently throughout the years. The observed pattern suggests the influence of seasonal climatic processes on coastal water temperature in the Nungwi region.
+
+```{r echo=FALSE, message=FALSE}
+# Plot SST trend
+ggplot(final_data, aes(date, mean_sst)) +
+  geom_line(color = "red") +
+  geom_smooth(se = FALSE)
+```
+
+**Figure 3:** *Time-series trend of SST in Nungwi coastal waters from 2018 to 2023.*
+
+**5.2  Chlorophyll-a Time Series**
+
+The temporal trend of chlorophyll-a concentration over the study period is presented in **Figure 4**. The time series plot shows fluctuations in chlorophyll-a concentration across months and years, indicating dynamic biological productivity within the coastal environment. The smoothed trend line highlights the overall pattern of variability and suggests the presence of periodic increases and decreases in phytoplankton biomass over time.
+
+```{r echo=FALSE, message=FALSE}
+# Plot Chlorophyll trend
+ggplot(final_data, aes(date, chl_a)) +
+  geom_line(color = "green") +
+  geom_smooth(se = FALSE)
+```
+
+**Figure 4:** *Time-series trend of chlorophyll-a concentration in Nungwi coastal waters from 2018 to 2023.*
+
+**5.3  Seasonal Chlorophyll Pattern**
+
+Seasonal analysis of chlorophyll-a concentration revealed clear monthly variability throughout the study period (**Figure 5**). The monthly average chlorophyll-a concentrations showed distinct peaks during specific months, indicating periods of enhanced phytoplankton productivity. These seasonal peaks suggest the influence of environmental factors such as temperature variability and water column mixing on biological productivity. The recurring monthly pattern highlights the presence of predictable seasonal cycles in chlorophyll-a concentration within Nungwi coastal waters.
+
+```{r echo=FALSE, message=FALSE}
+# Monthly average
+monthly_avg <- final_data %>%
+  group_by(month) %>%
+  summarise(
+    chl_mean = mean(chl_a),
+    sst_mean = mean(mean_sst)
+  )
+
+
+ggplot(monthly_avg, aes(month, chl_mean)) +
+  geom_col(fill = "darkgreen")
+```
+
+```{r}
+ x <- final_data %>% 
+ group_by(year) %>% 
+summarise(
+  chl_mean = mean(chl_a),
+  sst_mean = mean(mean_sst)
+)
+x <- x %>% 
+  mutate(year =
+           as.character(year)
+         )
+flextable(x)
+```
+
+**Figure 5:** *Monthly average chlorophyll-a concentration showing seasonal variation in Nungwi coastal waters from 2018 to 2023.*
+
+**5.4  SST and Chlorophyll Relationship**
+
+Scatterplot analysis of SST and chlorophyll-a concentration (**Figure 6**) indicated a negative relationship between the two variables. The regression line suggests that increases in Sea Surface Temperature are generally associated with decreases in chlorophyll-a concentration, highlighting the influence of temperature variability on marine productivity.
+
+**The correlation between SST and chlorophyll is** `r cor(final_data$mean_sst, final_data$chl_a)`
+
+```{r echo=FALSE, message=FALSE}
+# SST and chlorophyll relationship
+ggplot(final_data, aes(mean_sst, chl_a)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "Relationship Between SST and Chlorophyll",
+    x = "Sea Surface Temperature",
+    y = "Chlorophyll-a"
+  )
+```
+
+**Figure 6:** *SST and chlorophyll relationship in Nungwi coastal waters from 2018 to 2023.*
+
+**5.5  Observed vs Predicted Chlorophyll**
+
+A predictive regression model was developed to estimate chlorophyll-a concentration based on Sea Surface Temperature. The comparison between observed and predicted chlorophyll-a values is shown in **Figure 7**. The predicted values generally follow the observed pattern, indicating that Sea Surface Temperature plays an important role in influencing chlorophyll-a variability. Although some differences between observed and predicted values were observed, the overall agreement demonstrates the usefulness of regression modeling for understanding and predicting biological productivity in coastal marine environments.
+
+```{r echo=FALSE, message=FALSE}
+# Predictive model
+model <- lm(chl_a ~ mean_sst, data = final_data)
+
+final_data$predicted_chl <- predict(model)
+
+ggplot(final_data, aes(date)) +
+  geom_line(aes(y = chl_a), color = "green") +
+  geom_line(aes(y = predicted_chl), color = "black")
+```
+
+**Figure 7:** *Comparison between observed and predicted chlorophyll-a concentration based on regression modeling using Sea Surface Temperature.*
+
+**5.6  Anomaly Analysis**
+
+Anomaly analysis identified periods where SST and chlorophyll-a deviated from their long term mean values (**Figure 8**). These anomalies indicate unusual environmental conditions that may influence marine ecosystem dynamics. The detection of anomalies is useful for understanding extreme events and variability in coastal ocean conditions.
+
+```{r echo=FALSE, message=FALSE}
+# SST Anomalies Over Time
+final_data <- final_data %>%
+  mutate(
+    chl_anomaly = chl_a - mean(chl_a),
+    sst_anomaly = mean_sst - mean(mean_sst)
+  )
+
+ggplot(final_data, aes(date, sst_anomaly)) +
+  geom_line(color = "red") +
+  geom_hline(yintercept = 0)
+```
+
+**Figure 8:** *SST anomalies in Nungwi coastal waters from 2018 to 2023.*
+
+**5.7  Lagged SST vs Chlorophyll**
+
+Lag analysis was conducted to examine the delayed influence of Sea Surface Temperature on chlorophyll-a concentration. The relationship between chlorophyll-a and the previous month's Sea Surface Temperature is shown in **Figure 9**. The scatterplot indicates a relationship between lagged SST values and chlorophyll-a concentration, suggesting that changes in temperature may influence biological productivity after a short time delay. The regression trend line further illustrates the direction of this relationship. This finding highlights the importance of considering time lagged environmental effects when studying physical biological interactions in coastal marine ecosystems.
+
+```{r echo=FALSE, message=FALSE}
+# Lagged SST vs Chlorophyll
+final_data <- final_data %>%
+  arrange(date) %>%
+  mutate(
+    sst_lag1 = lag(mean_sst, 1)
+  )
+
+ggplot(final_data, aes(sst_lag1, chl_a)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+**Figure 9:** *Relationship between previous month's Sea Surface Temperature (lagged SST) and chlorophyll-a concentration in Nungwi coastal waters.*
+
+# 6.  Discussion
+
+The results of this study revealed clear seasonal and interannual variability in Sea Surface Temperature (SST) and chlorophyll-a concentration in the coastal waters of Nungwi from 2018 to 2023. The time series analysis demonstrated recurring fluctuations in SST across the study period, indicating strong seasonal control of temperature patterns. These variations are likely associated with the influence of monsoon driven wind systems that dominate ocean circulation in the western Indian Ocean region. Seasonal wind patterns promote mixing processes that influence surface temperature and nutrient distribution, thereby affecting biological productivity.
+
+Chlorophyll-a concentration exhibited pronounced temporal variability, with seasonal peaks observed during specific months of the year. The seasonal chlorophyll pattern indicates that phytoplankton productivity in Nungwi coastal waters follows predictable cycles, likely controlled by changes in nutrient availability and water column mixing. Increased chlorophyll-a concentrations during relatively cooler periods suggest that reduced temperature conditions enhance vertical mixing, allowing nutrients from deeper waters to reach the surface and stimulate phytoplankton growth. This seasonal relationship highlights the importance of physical forcing mechanisms in regulating marine biological processes.
+
+The scatterplot analysis revealed a negative relationship between SST and chlorophyll-a concentration, indicating that higher temperatures were generally associated with lower chlorophyll-a levels. This finding supports the hypothesis that cooler water conditions enhance biological productivity in tropical coastal regions. The regression model further demonstrated that SST plays a measurable role in influencing chlorophyll-a variability. Although SST alone may not explain all observed variability, the predictive model showed reasonable agreement between observed and predicted chlorophyll-a values, suggesting that temperature is an important environmental driver of phytoplankton dynamics.
+
+Lag analysis provided additional insight into delayed ecosystem responses by examining the relationship between chlorophyll-a concentration and the previous month's SST. The observed relationship between lagged SST and chlorophyll-a suggests that changes in temperature may influence biological productivity after a short time delay. Such delayed responses are common in marine ecosystems, where biological processes such as phytoplankton growth depend on nutrient availability and environmental adjustments that occur over time. The inclusion of lag analysis highlights the dynamic nature of physical biological interactions in coastal waters.
+
+Seasonal averaging further confirmed the presence of consistent monthly patterns in chlorophyll-a concentration. These seasonal cycles indicate that the marine environment in Nungwi experiences predictable productivity phases linked to climatic variability. The identification of anomalies in SST and chlorophyll-a provided evidence of unusual environmental conditions that deviate from long-term averages. Such anomalies may represent short term disturbances or extreme environmental events that influence marine ecosystem behavior. Detecting these anomalies is important for understanding ecosystem sensitivity and resilience to environmental change.
+
+Overall, the integration of time-series analysis, seasonal analysis, regression modeling, anomaly detection, and lag analysis provides a comprehensive understanding of the physical biological interactions occurring in Nungwi coastal waters. The results demonstrate that temperature variability plays a central role in regulating phytoplankton productivity, while seasonal processes control the timing and magnitude of biological responses. These findings contribute valuable knowledge to the understanding of coastal ecosystem dynamics and highlight the importance of continuous monitoring using satellite based observations.
+
+# 7.  Conclusion
+
+This study investigated the seasonal and interannual variability of Sea Surface Temperature and chlorophyll-a concentration in Nungwi coastal waters from 2018 to 2023. The results revealed clear seasonal patterns in both SST and chlorophyll-a, indicating strong climatic control of coastal ocean conditions. Higher chlorophyll-a concentrations were generally associated with cooler temperature periods, suggesting enhanced phytoplankton productivity under favorable environmental conditions.
+
+Statistical analyses demonstrated a negative relationship between SST and chlorophyll-a concentration, confirming the importance of temperature as a key factor influencing marine biological productivity. Regression and lag analyses further showed that SST variability contributes to both immediate and delayed changes in chlorophyll-a concentration. Seasonal and anomaly analyses provided additional evidence of recurring productivity cycles and occasional unusual environmental events.
+
+Overall, the findings of this study highlight the strong interaction between physical and biological processes in Nungwi coastal waters. The study demonstrates the effectiveness of combining satellite derived data with statistical modeling techniques to monitor and understand marine ecosystem variability. These results provide valuable baseline information for future oceanographic studies and environmental monitoring programs in the region.
+
+# 8.  Recommendations
+
+Future studies should incorporate additional oceanographic variables such as salinity, dissolved oxygen, wind speed, and nutrient concentration to improve understanding of the factors influencing phytoplankton productivity in coastal waters. Including multiple environmental variables would allow the development of more advanced predictive models capable of explaining a greater proportion of variability in chlorophyll-a concentration.
+
+Expanding the spatial coverage of the analysis to include additional coastal locations around Zanzibar and the western Indian Ocean region would enable comparison of regional productivity patterns and improve understanding of large scale oceanographic processes. Such comparative studies would support regional marine resource management and environmental planning.
+
+Long term monitoring using satellite based observations is strongly recommended to detect gradual environmental changes associated with climate variability and ocean warming. Continuous monitoring would support early identification of abnormal conditions such as marine heat events and productivity shifts that may affect fisheries and marine ecosystems.
+
+It is also recommended that future research integrate biological observations, such as plankton sampling and fisheries data, to link satellite derived productivity estimates with ecological responses. This integration would enhance the practical application of oceanographic data in supporting sustainable fisheries management and coastal ecosystem conservation in the Nungwi region.
+
+# Acknowledgment
+
+I would like to express my sincere gratitude to all individuals and institutions that contributed to the successful completion of this project.
+
+Special appreciation is extended to the National Aeronautics and Space Administration (NASA) Ocean Biology Processing Group for providing open access satellite data used in this study. I also acknowledge the developers of the R statistical software and its associated packages, which made data processing, analysis, and visualization possible.
+
+Finally, I am deeply thankful to my mentors, and colleagues for their guidance, support, and encouragement throughout the development of this project.
+
+# References
+
+[1]Behrenfeld, M. J., & Falkowski, P. G. (1997). Photosynthetic rates derived from satellite-based chlorophyll concentration. Limnology and Oceanography, 42(1), 1–20.
+
+[2]Falkowski, P. G., & Raven, J. A. (2007). Aquatic photosynthesis (2nd ed.). Princeton University Press.
+
+[3]Boyce, D. G., Lewis, M. R., & Worm, B. (2010). Global phytoplankton decline over the past
+
+[4]Stewart, R. H. (2008). Introduction to physical oceanography. Texas A&M University.
+
+[5]Talley, L. D., Pickard, G. L., Emery, W. J., & Swift, J. H. (2011). Descriptive physical oceanography: An introduction (6th ed.). Academic Press.
+
+[6]Longhurst, A. (2007). Ecological geography of the sea (2nd ed.). Academic Press.
+
+[7]NASA Goddard Space Flight Center. (2023). Ocean color data processing system. Retrieved from
+
+[8]McClain, C. R. (2009). A decade of satellite ocean color observations. Annual Review of Marine Science, 1, 19–42.
+
+[9]O'Reilly, J. E., et al. (1998). Ocean color chlorophyll algorithms for SeaWiFS. Journal of Geophysical Research, 103(C11), 24937–24953.
+
+[10]Schott, F. A., & McCreary, J. P. (2001). The monsoon circulation of the Indian Ocean. Progress in Oceanography, 51(1), 1–123.
+
+[11]Wiggert, J. D., Hood, R. R., Banse, K., & Kindle, J. C. (2005). Monsoon-driven biogeochemical processes in the Arabian Sea. Progress in Oceanography, 65(2–4), 176–213.
+
+[12]McClanahan, T. R. (1988). Seasonality in East Africa's coastal waters. Marine Ecology Progress Series, 44, 191–199.
+
+[13]R Core Team. (2023). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.
+
+[14]Wickham, H. (2016). ggplot2: Elegant graphics for data analysis. Springer-Verlag New York.
+
+[15]Wickham, H., & Grolemund, G. (2017). R for data science. O'Reilly Media.
+
+# APPENDIX — R SCRIPTS
+
+Appendix A — Data Preparation Script
+
+```{r echo=TRUE, results='hide', warning=FALSE, message=FALSE, fig.show='hide'}
+# Load packages
+pacman::p_load(tidyverse, here, prettydoc,reactable)
+
+# Load dataset
+final_data <- read_csv(here("data/final_data.csv"))
+
+# Convert date column
+final_data$date <- dmy(final_data$date)
+
+# Extract month
+final_data$month <- month(final_data$date, label = TRUE)
+
+# Making data table
+reactable(final_data)
+```
+
+Appendix B — Monthly Chlorophyll Analysis
+
+```{r echo=TRUE, results='hide', warning=FALSE, message=FALSE, fig.show='hide'}
+# Monthly averages
+monthly_avg <- final_data %>%
+  group_by(month) %>%
+  summarise(
+    chl_mean = mean(chl_a),
+    sst_mean = mean(mean_sst)
+  )
+
+# Plot seasonal chlorophyll
+ggplot(monthly_avg, aes(month, chl_mean)) +
+  geom_col(fill = "darkgreen") +
+  labs(
+    title = "Seasonal Chlorophyll Pattern",
+    x = "Month",
+    y = "Mean Chlorophyll-a"
+  )
+
+```
+
+Appendix C — Chlorophyll Trend Analysis
+
+```{r echo=TRUE, results='hide', warning=FALSE, message=FALSE, fig.show='hide'}
+# Chlorophyll trend plot
+ggplot(final_data, aes(date, chl_a)) +
+  geom_line(color = "green") +
+  geom_smooth(se = FALSE) +
+  labs(
+    title = "Chlorophyll-a Trend",
+    x = "Date",
+    y = "Chlorophyll-a"
+  )
+```
+
+Appendix D — Predictive Modeling
+
+```{r echo=TRUE, results='hide', warning=FALSE, message=FALSE, fig.show='hide'}
+# Linear regression model
+model <- lm(chl_a ~ mean_sst, data = final_data)
+
+# Predict chlorophyll
+final_data$predicted_chl <- predict(model)
+
+# Plot observed vs predicted
+ggplot(final_data, aes(date)) +
+  geom_line(aes(y = chl_a), color = "green") +
+  geom_line(aes(y = predicted_chl), color = "black") +
+  labs(
+    title = "Observed vs Predicted Chlorophyll",
+    x = "Date",
+    y = "Chlorophyll-a"
+  )
+```
+
+Appendix E — Lag Analysis
+
+```{r echo=TRUE, results='hide', warning=FALSE, message=FALSE, fig.show='hide'}
+# Create lagged SST
+final_data <- final_data %>%
+  arrange(date) %>%
+  mutate(
+    sst_lag1 = lag(mean_sst, 1)
+  )
+
+# Lagged SST vs Chlorophyll
+ggplot(final_data, aes(sst_lag1, chl_a)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "Lagged SST vs Chlorophyll",
+    x = "Lagged SST",
+    y = "Chlorophyll-a"
+  )
+```
+
+
+ 
