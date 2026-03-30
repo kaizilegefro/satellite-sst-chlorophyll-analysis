@@ -20,11 +20,11 @@ The analysis focuses on time series environmental data and spatial interpretatio
 - Spatial interpretation using GIS
 
 ## Tools Used
-- R Programming (ggplot2, dplyr)
-- ArcGIS
-- Time-Series Analysis
-- Spatial Data Analysis
-- R Markdown
+- **R Programming** (ggplot2, dplyr)
+- **ArcGIS**
+- **Time Series Analysis**
+- **Spatial Data Analysis**
+- **R Markdown**
 
   ## Project Structure
 
@@ -38,14 +38,14 @@ The analysis focuses on time series environmental data and spatial interpretatio
 
 Below are selected figures generated during the analysis:
 
-![Date vs Chlorophyll](date_vs_chlorophyll.png)
-![Date vs Predicted_chlorophyll](date_vs_predicted_chlorophyll.png)
-![Date vs SST](date_vs_sst.png)
-![Date vs SST_anomaly](date_vs_sst_anomaly.png)
-![Flow_chart](flow_chart.png)
-![Month vs Chl_mean](month_vs_chl_mean.png)
-![SST_lag1 vs Chlorophyll](sst_lag1_vs_chlorophyll.png)
-![SST vs Chlorophyll](sst_vs_chlorophyll.png)
+![Date vs Chlorophyll](figures/date_vs_chlorophyll.png)
+![Date vs Predicted_chlorophyll](figures/date_vs_predicted_chlorophyll.png)
+![Date vs SST](figures/date_vs_sst.png)
+![Date vs SST_anomaly](figures/date_vs_sst_anomaly.png)
+![Flow_chart](figures/flow_chart.png)
+![Month vs Chl_mean](figures/month_vs_chl_mean.png)
+![SST_lag1 vs Chlorophyll](figures/sst_lag1_vs_chlorophyll.png)
+![SST vs Chlorophyll](figures/sst_vs_chlorophyll.png)
 
 ## Outputs
 - Time series visualizations
